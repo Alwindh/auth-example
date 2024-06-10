@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Container, Paper, Button, TextField, Typography, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../state/auth.slice";
 
 export function LoginPage() {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
+
 	const [userForm, setUserForm] = useState({ username: "", password: "" });
 
 	function handleFormChange(event) {
@@ -11,6 +15,16 @@ export function LoginPage() {
 	}
 	function navigateToRegister() {
 		navigate("/register");
+	}
+
+	function handleLogin() {
+		const { username, password } = userForm;
+		if (username === "admin" && password === "admin") {
+			dispatch(login({ username, password }));
+			navigate("/home");
+		} else {
+			alert("Invalid credentials");
+		}
 	}
 
 	return (
@@ -41,7 +55,7 @@ export function LoginPage() {
 							Register here.
 						</div>
 					</Typography>
-					<Button>Login</Button>
+					<Button onClick={handleLogin}>Login</Button>
 				</Stack>
 			</Paper>
 		</Container>
